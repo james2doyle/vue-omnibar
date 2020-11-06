@@ -1,6 +1,6 @@
 <template>
   <transition name="omnibar-fade">
-    <div class="omnibar" :class="{ 'omnibar-shadow': shadow, 'omnibar-overlay': overlay, 'omnibar-rounded': rounded }" @click="handleOverlayClick($event)" v-if="open">
+    <div class="omnibar" :class="{ 'omnibar-shadow': shadow, 'omnibar-overlay': overlay }" @click="handleOverlayClick($event)" v-if="open">
       <div class="omnibar-inside">
         <slot name="header">
           <h3>Omnibar</h3>
@@ -32,7 +32,7 @@ type ItemData = any | Record<string, any>
 interface Data {
   search: string
   results: Array<ItemData>
-  keys: Array<string> | boolean
+  keys: Record<string, boolean>
   open: boolean
 }
 
@@ -53,7 +53,6 @@ interface Props {
   keybinding: Array<string>
   shadow: boolean
   overlay: boolean
-  rounded: boolean
   options: Fuse.IFuseOptions<string>
   data: Array<ItemData>
   initial: Array<ItemData>
@@ -65,35 +64,36 @@ const FOCUSABLE = 'a, button, input, textarea, select, details, [tabindex]:not([
 export default Vue.extend<Data, Methods, Computed, Props>({
   name: 'Omnibar',
   props: {
+    // which key combo to use to open the modal
     keybinding: {
       type: Array,
       required: false,
       default: () => ['shift', 'p'] as Array<string>,
     },
+    // add a shadow
     shadow: {
       type: Boolean,
       required: false,
       default: true,
     },
+    // add an overlay
     overlay: {
       type: Boolean,
       required: false,
       default: true,
     },
-    rounded: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
+    // additional options to pass to Fuse
     options: {
       type: Object,
       required: false,
-      default: () => {},
+      default: () => ({}),
     },
+    // the list to search in
     data: {
       type: [Object, Array],
       required: true,
     },
+    // the data to show when the modal opens
     initial: {
       type: [Object, Array],
       required: false,
@@ -105,7 +105,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       search: '',
       results: [],
       keys: {},
-      open: true, // false,
+      open: false,
     };
   },
   beforeMount() {
@@ -116,17 +116,27 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('keyup', this.handleKeyUp);
   },
+  mounted() {
+    // allow the modal to be opened programmatically
+    this.$root.$on('openOmnibar', this.openOmnibar);
+  },
   methods: {
     handleArrowKeys(e: KeyboardEvent) {
-      if (!this.$refs['omnibar-search-list']) {
+      const currentTarget = (this.$refs['omnibar-search-list'] as HTMLElement);
+
+      if (!currentTarget) {
         return;
+      }
+
+      // prevent scrolling with space and arrow keys when fired on the omnibar
+      if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
       }
 
       const key = e.key;
       const target = e.target as HTMLElement;
-      const currentTarget = e.currentTarget as HTMLElement;
 
-      const items = Array.from((this.$refs['omnibar-search-list'] as HTMLElement).querySelectorAll(FOCUSABLE)) as Array<HTMLElement>;
+      const items = Array.from(currentTarget.querySelectorAll(FOCUSABLE)) as Array<HTMLElement>;
       const currentIndex = items.indexOf(target);
 
       if (currentIndex === -1) {
@@ -138,9 +148,11 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         return;
       }
 
+      const list = (this.$refs['omnibar-search'] as HTMLInputElement);
+
       if (key === 'ArrowDown') {
         if (currentIndex + 1 === items.length) {
-          return (this.$refs['omnibar-search'] as HTMLElement).focus();
+          return list.focus();
         }
 
         items[currentIndex + 1].focus();
@@ -148,7 +160,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
 
       if (key === 'ArrowUp') {
         if (currentIndex - 1 === -1) {
-          return (this.$refs['omnibar-search'] as HTMLElement).focus();
+          return list.focus();
         }
 
         items[currentIndex - 1].focus();
@@ -180,17 +192,19 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       this.open = true;
       // nextTick if after v-if transition is done
       this.$nextTick(() => {
+        document.body.classList.add('omnibar-block-scrolling');
         // timeout so that the keys being pressed are not captured in the focused input
         setTimeout(() => {
-          (this.$refs['omnibar-search'] as HTMLElement).focus();
+          (this.$refs['omnibar-search'] as HTMLInputElement).focus();
         });
       });
     },
     closeOmnibar() {
       this.open = false;
+      document.body.classList.remove('omnibar-block-scrolling');
     },
     handleInput(e: KeyboardEvent) {
-      this.search = (e.target as HTMLElement).value || '';
+      this.search = (e.target as HTMLInputElement).value || '';
       const fuse = new Fuse(this.data, this.options);
       const indexes = fuse.search(this.search);
 
@@ -215,6 +229,9 @@ export default Vue.extend<Data, Methods, Computed, Props>({
 </script>
 
 <style>
+body.omnibar-block-scrolling {
+  overflow: hidden;
+}
 .omnibar {
   position: fixed;
   top: 0;
@@ -226,6 +243,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   height: 100%;
   padding: 1rem;
   box-sizing: border-box;
+  overscroll-behavior: contain;
 }
 .omnibar-fade-enter-active, .omnibar-fade-leave-active {
   transition: opacity 200ms ease;
@@ -239,14 +257,13 @@ export default Vue.extend<Data, Methods, Computed, Props>({
 .omnibar.omnibar-shadow .omnibar-inside {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
-.omnibar.omnibar-rounded {
-  border-radius: 5px;
-}
 .omnibar-inside {
   padding: 1rem 2rem 2rem;
   background-color: white;
   max-width: 24rem;
   margin: 10% auto 0;
+  position: relative;
+  z-index: 2;
 }
 .omnibar-search {
   width: 100%;

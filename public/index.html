@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Vue Omnibar</title>
+  <meta name="description" content="Vue component to create modal popups that emulate omnibar, command palette, open anywhere, or other 'search and act' functions/features" />
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="author" content="James Doyle" />
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+  <script src="./omnibar.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+  <style type="text/css" media="screen">
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      min-width: 100vw;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 2rem auto 5rem;
+    }
+    .task-list-item input {
+      margin-right: 0.5rem;
+    }
+    /* remove new.css styles */
+    .omnibar h3 {
+      color: black;
+      border-bottom: none;
+    }
+    .omnibar input {
+      color: black;
+      background: initial;
+    }
+    .omnibar-search-list a {
+      display: inline-block;
+      width: 100%;
+    }
+    .omnibar-search-list a:focus {
+      /* focus styles */
+      outline: 1px solid rgba(0, 150, 255, 1);
+      -webkit-outline: 1px solid rgba(0, 150, 255, 1);
+      -moz-outline: 1px solid rgba(0, 150, 255, 1);
+      -ms-outline: 1px solid rgba(0, 150, 255, 1);
+      -o-outline: 1px solid rgba(0, 150, 255, 1);
+      box-shadow: 0 0 6px rgba(0, 150, 255, 1);
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <omnibar :data="data">
+      <h3 slot="header">Command Palette</h3>
+      <template #results="{ results }">
+        <div v-for="item in results" :key="item" class="omnibar-search-results-list">
+          <a href="#" @click.prevent="handleClick(item)" v-text="item"></a>
+        </div>
+      </template>
+    </omnibar>
+    <div class="container">
+      <c class="output" id="html-output">
+<h1><a class="anchor" href="https://github.com/james2doyle/vue-omnibar">Vue Omnibar</a></h1>
+<blockquote>
+<p>Create modal popups that emulate omnibar, command palette, open anywhere, or other "search and act" functions/features</p>
+</blockquote>
+<h2><a id="project" class="anchor" aria-hidden="true" href="#project"></a>Project</h2>
+<p><a class="anchor" href="https://github.com/james2doyle/vue-omnibar">View Project</a></p>
+<h2><a id="demo" class="anchor" aria-hidden="true" href="#demo"></a>Demo</h2>
+<p><button type="button" @click.prevent="$root.$emit('openOmnibar')">Open Demo</button></p>
+<p>Or press <kbd>shift</kbd> <kbd>p</kbd></p>
+<p><img src="demo.gif" alt="demo of the keyboard action"></p>
+<h2><a id="features" class="anchor" aria-hidden="true" href="#features"></a>Features</h2>
+<ul>
+<li class="task-list-item"><input type="checkbox" disabled="" checked="">built-in filtering using <a href="https://fusejs.io/">Fuse.js</a></li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked="">custom key combo support</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked="">listens for <code>esc</code> key</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked="">bring your own styling (basic styles included)</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked="">arrow key support</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked="">uses slots for best flexibility</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked="">"off-click" closes the modal</li>
+</ul>
+<h2><a id="installation" class="anchor" aria-hidden="true" href="#installation"></a>Installation</h2>
+<pre><code class="language-bash hljs">npm install vue-omnibar
+</code></pre>
+<h3><a id="global-usage" class="anchor" aria-hidden="true" href="#global-usage"></a>Global Usage</h3>
+<pre><code class="language-js hljs javascript"><span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>;
+<span class="hljs-keyword">import</span> Omnibar <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-omnibar'</span>;
+
+Vue.component(<span class="hljs-string">'omnibar'</span>, Omnibar);
+</code></pre>
+<h3><a id="in-single-file-components" class="anchor" aria-hidden="true" href="#in-single-file-components"></a>In Single File Components</h3>
+<pre><code class="language-js hljs javascript"><span class="hljs-keyword">import</span> Omnibar <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-omnibar'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-attr">components</span>: {
+    Omnibar,
+  },
+  <span class="hljs-comment">// ...</span>
+};
+</code></pre>
+<h2><a id="usage" class="anchor" aria-hidden="true" href="#usage"></a>Usage</h2>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;div id="app"&gt;
+    &lt;omnibar :data="data" :initial="data.slice(0, 4)"&gt;
+      &lt;h3 slot="header"&gt;Command Palette&lt;/h3&gt;
+      &lt;!-- the data to show when nothing has been typed --&gt;
+      &lt;!-- if the initial data is empty, nothing is shown --&gt;
+      &lt;template #initial="{ initial }"&gt;
+        &lt;div v-for="item in initial" :key="item" class="omnibar-search-initial-list"&gt;
+          &lt;a href="#" @click.prevent="handleClick(item)" v-text="item"&gt;&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
+      &lt;!-- the filtered results based on the what is being typed --&gt;
+      &lt;template #results="{ results }"&gt;
+        &lt;div v-for="item in results" :key="item" class="omnibar-search-results-list"&gt;
+          &lt;a href="#" @click.prevent="handleClick(item)" v-text="item"&gt;&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
+    &lt;/omnibar&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script lang="ts"&gt;
+import Vue from 'vue';
+import Omnibar from '@/omnibar.vue';
+
+export default Vue.extend({
+  name: 'OmnibarExample',
+  components: {
+    Omnibar
+  },
+  data() {
+    return {
+      data: [
+        '1️⃣ --- one',
+        '2️⃣ --- two',
+        '3️⃣ --- three',
+        '4️⃣ --- four',
+        '5️⃣ --- five',
+        '6️⃣ --- six',
+      ]
+    };
+  },
+  methods: {
+    handleClick(item: any) {
+      window.alert(item);
+    }
+  },
+});
+&lt;/script&gt;
+
+&lt;style type="text/css"&gt;
+.omnibar-search-list a {
+  display: inline-block;
+  width: 100%;
+}
+&lt;/style&gt;
+</code></pre>
+<h2><a id="opening-programmatically" class="anchor" aria-hidden="true" href="#opening-programmatically"></a>Opening Programmatically</h2>
+<pre><code class="language-vue">&lt;!-- the `openOmnibar` event can be called anyway and will trigger the modal to open --&gt;
+&lt;button type="button" @click.prevent="$root.$emit('openOmnibar')"&gt;Show Omnibar&lt;/button&gt;
+</code></pre>
+<h2><a id="available-props" class="anchor" aria-hidden="true" href="#available-props"></a>Available Props</h2>
+<ul>
+<li><em>data</em>: <code>Array&lt;any | Record&lt;string, any&gt;&gt;</code> - the data to filter when typing (<code>required</code>)</li>
+<li><em>initial</em>: <code>Array&lt;any | Record&lt;string, any&gt;&gt;</code> - the data to show when the field is empty (default: <code>[]</code>)</li>
+<li><em>keybinding</em>: <code>Array&lt;string&gt;</code> - combination of keys that need to be pressed (default: <code>['shift', 'p']</code>)</li>
+<li><em>shadow</em>: <code>boolean</code> - add a shadow to the view box (default: <code>true</code>)</li>
+<li><em>overlay</em>: <code>boolean</code> - show an overlay under the view box (default: <code>true</code>)</li>
+<li><em>options</em>: <code>Fuse.IFuseOptions&lt;string&gt;</code> - options to pass to Fuse.js (<a href="https://fusejs.io/api/options.html">see options page</a>) (default: <code>{}</code>)</li>
+</ul>
+<h2><a id="development" class="anchor" aria-hidden="true" href="#development"></a>Development</h2>
+<ul>
+<li><code>npm run serve</code>: run a development server with a the <code>serve.vue</code> page</li>
+<li><code>npm run build</code>: generate the build output</li>
+</ul>
+</c>
+</div>
+</div>
+<script type="text/javascript" charset="utf-8">
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data: [
+        '1️⃣ --- one',
+        '2️⃣ --- two',
+        '3️⃣ --- three',
+        '4️⃣ --- four',
+        '5️⃣ --- five',
+        '6️⃣ --- six',
+        '7️⃣ --- seven',
+        '8️⃣ --- eight',
+        '9️⃣ --- nine',
+        '🔟 --- ten',
+        ]
+      };
+    },
+    methods: {
+      handleClick(item) {
+        window.alert('Clicked the item', item);
+      },
+    },
+  });
+</script>
+</body>
+</html>
