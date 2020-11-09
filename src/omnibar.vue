@@ -201,6 +201,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
     closeOmnibar() {
       this.open = false;
+      this.search = '';
+      this.results = [];
       document.body.classList.remove('omnibar-block-scrolling');
     },
     handleInput(e: KeyboardEvent) {
