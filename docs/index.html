@@ -9,8 +9,9 @@
   <meta name="author" content="James Doyle" />
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
   <script src="./omnibar.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/atom-one-dark.min.css">
   <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.3/new.min.css">
   <style type="text/css" media="screen">
     body {
       margin: 0;
@@ -23,6 +24,10 @@
       width: 100%;
       max-width: 800px;
       margin: 2rem auto 5rem;
+      padding: 0 2rem;
+    }
+    .container .hljs {
+      background: none;
     }
     .task-list-item input {
       margin-right: 0.5rem;
@@ -53,7 +58,7 @@
 </head>
 <body>
   <div id="app">
-    <omnibar :data="data">
+    <omnibar :data="data" :initial="data.slice(0, 4)">
       <h3 slot="header">Command Palette</h3>
       <template #results="{ results }">
         <div v-for="item in results" :key="item" class="omnibar-search-results-list">
@@ -62,13 +67,10 @@
       </template>
     </omnibar>
     <div class="container">
-      <c class="output" id="html-output">
-<h1><a class="anchor" href="https://github.com/james2doyle/vue-omnibar">Vue Omnibar</a></h1>
+      <c class="output" id="html-output"><h1><a id="vue-omnibar" class="anchor" aria-hidden="true" href="#vue-omnibar"></a>Vue Omnibar</h1>
 <blockquote>
 <p>Create modal popups that emulate omnibar, command palette, open anywhere, or other "search and act" functions/features</p>
 </blockquote>
-<h2><a id="project" class="anchor" aria-hidden="true" href="#project"></a>Project</h2>
-<p><a class="anchor" href="https://github.com/james2doyle/vue-omnibar">View Project</a></p>
 <h2><a id="demo" class="anchor" aria-hidden="true" href="#demo"></a>Demo</h2>
 <p><button type="button" @click.prevent="$root.$emit('openOmnibar')">Open Demo</button></p>
 <p>Or press <kbd>shift</kbd> <kbd>p</kbd></p>
@@ -104,66 +106,66 @@ Vue.component(<span class="hljs-string">'omnibar'</span>, Omnibar);
 };
 </code></pre>
 <h2><a id="usage" class="anchor" aria-hidden="true" href="#usage"></a>Usage</h2>
-<pre><code class="language-vue">&lt;template&gt;
-  &lt;div id="app"&gt;
-    &lt;omnibar :data="data" :initial="data.slice(0, 4)"&gt;
-      &lt;h3 slot="header"&gt;Command Palette&lt;/h3&gt;
-      &lt;!-- the data to show when nothing has been typed --&gt;
-      &lt;!-- if the initial data is empty, nothing is shown --&gt;
-      &lt;template #initial="{ initial }"&gt;
-        &lt;div v-for="item in initial" :key="item" class="omnibar-search-initial-list"&gt;
-          &lt;a href="#" @click.prevent="handleClick(item)" v-text="item"&gt;&lt;/a&gt;
-        &lt;/div&gt;
-      &lt;/template&gt;
-      &lt;!-- the filtered results based on the what is being typed --&gt;
-      &lt;template #results="{ results }"&gt;
-        &lt;div v-for="item in results" :key="item" class="omnibar-search-results-list"&gt;
-          &lt;a href="#" @click.prevent="handleClick(item)" v-text="item"&gt;&lt;/a&gt;
-        &lt;/div&gt;
-      &lt;/template&gt;
-    &lt;/omnibar&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+<pre><code class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">omnibar</span> <span class="hljs-attr">:data</span>=<span class="hljs-string">"data"</span> <span class="hljs-attr">:initial</span>=<span class="hljs-string">"data.slice(0, 4)"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">h3</span> <span class="hljs-attr">slot</span>=<span class="hljs-string">"header"</span>&gt;</span>Command Palette<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+      <span class="hljs-comment">&lt;!-- the data to show when nothing has been typed --&gt;</span>
+      <span class="hljs-comment">&lt;!-- if the initial data is empty, nothing is shown --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">template</span> #<span class="hljs-attr">initial</span>=<span class="hljs-string">"{ initial }"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"item in initial"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"item"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"omnibar-search-initial-list"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"handleClick(item)"</span> <span class="hljs-attr">v-text</span>=<span class="hljs-string">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+      <span class="hljs-comment">&lt;!-- the filtered results based on the what is being typed --&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">template</span> #<span class="hljs-attr">results</span>=<span class="hljs-string">"{ results }"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"item in results"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"item"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"omnibar-search-results-list"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"handleClick(item)"</span> <span class="hljs-attr">v-text</span>=<span class="hljs-string">"item"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">omnibar</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span>
 
-&lt;script lang="ts"&gt;
-import Vue from 'vue';
-import Omnibar from '@/omnibar.vue';
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"ts"</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">import</span> Vue <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>;
+<span class="hljs-keyword">import</span> Omnibar <span class="hljs-keyword">from</span> <span class="hljs-string">'@/omnibar.vue'</span>;
 
-export default Vue.extend({
-  name: 'OmnibarExample',
-  components: {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> Vue.extend({
+  <span class="hljs-attr">name</span>: <span class="hljs-string">'OmnibarExample'</span>,
+  <span class="hljs-attr">components</span>: {
     Omnibar
   },
   data() {
-    return {
-      data: [
-        '1️⃣ --- one',
-        '2️⃣ --- two',
-        '3️⃣ --- three',
-        '4️⃣ --- four',
-        '5️⃣ --- five',
-        '6️⃣ --- six',
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">data</span>: [
+        <span class="hljs-string">'1️⃣ --- one'</span>,
+        <span class="hljs-string">'2️⃣ --- two'</span>,
+        <span class="hljs-string">'3️⃣ --- three'</span>,
+        <span class="hljs-string">'4️⃣ --- four'</span>,
+        <span class="hljs-string">'5️⃣ --- five'</span>,
+        <span class="hljs-string">'6️⃣ --- six'</span>,
       ]
     };
   },
-  methods: {
+  <span class="hljs-attr">methods</span>: {
     handleClick(item: any) {
-      window.alert(item);
+      <span class="hljs-built_in">window</span>.alert(item);
     }
   },
 });
-&lt;/script&gt;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
-&lt;style type="text/css"&gt;
+<span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/css"</span>&gt;</span>
 .omnibar-search-list a {
   display: inline-block;
   width: 100%;
 }
-&lt;/style&gt;
+<span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
 </code></pre>
 <h2><a id="opening-programmatically" class="anchor" aria-hidden="true" href="#opening-programmatically"></a>Opening Programmatically</h2>
-<pre><code class="language-vue">&lt;!-- the `openOmnibar` event can be called anyway and will trigger the modal to open --&gt;
-&lt;button type="button" @click.prevent="$root.$emit('openOmnibar')"&gt;Show Omnibar&lt;/button&gt;
+<pre><code class="language-html hljs xml"><span class="hljs-comment">&lt;!-- the `openOmnibar` event can be called anyway and will trigger the modal to open --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"$root.$emit('openOmnibar')"</span>&gt;</span>Show Omnibar<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 </code></pre>
 <h2><a id="available-props" class="anchor" aria-hidden="true" href="#available-props"></a>Available Props</h2>
 <ul>
