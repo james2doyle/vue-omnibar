@@ -54,6 +54,9 @@
       -o-outline: 1px solid rgba(0, 150, 255, 1);
       box-shadow: 0 0 6px rgba(0, 150, 255, 1);
     }
+    pre {
+      padding: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -168,9 +171,12 @@ Vue.component(<span class="hljs-string">'omnibar'</span>, Omnibar);
 <h2><a id="opening-programmatically" class="anchor" aria-hidden="true" href="#opening-programmatically"></a>Opening Programmatically</h2>
 <pre><code class="language-html hljs xml"><span class="hljs-comment">&lt;!-- the `openOmnibar` event can be called anyway and will trigger the modal to open --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"$root.$emit('openOmnibar')"</span>&gt;</span>Show Omnibar<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-comment">&lt;!-- if there is a `name`, the event will have the name appended: `'openOmnibar.myName'` --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"$root.$emit('openOmnibar.myName')"</span>&gt;</span>Show "myName" modal<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 </code></pre>
 <h2><a id="available-props" class="anchor" aria-hidden="true" href="#available-props"></a>Available Props</h2>
 <ul>
+<li><em>name</em>: <code>string | boolean | null</code> - namespace the modal and the open event (default: <code>''</code>)</li>
 <li><em>data</em>: <code>Array&lt;any | Record&lt;string, any&gt;&gt;</code> - the data to filter when typing (<code>required</code>)</li>
 <li><em>initial</em>: <code>Array&lt;any | Record&lt;string, any&gt;&gt;</code> - the data to show when the field is empty (default: <code>[]</code>)</li>
 <li><em>keybinding</em>: <code>Array&lt;string&gt; | null</code> - combination of keys that need to be pressed (default: <code>['shift', 'p']</code>)</li>

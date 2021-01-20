@@ -112,10 +112,13 @@ export default Vue.extend({
 ```vue
 <!-- the `openOmnibar` event can be called anyway and will trigger the modal to open -->
 <button type="button" @click.prevent="$root.$emit('openOmnibar')">Show Omnibar</button>
+<!-- if there is a `name`, the event will have the name appended: `'openOmnibar.myName'` -->
+<button type="button" @click.prevent="$root.$emit('openOmnibar.myName')">Show "myName" modal</button>
 ```
 
 ## Available Props
 
+- *name*: `string | boolean | null` - namespace the modal and the open event (default: `''`)
 - *data*: `Array<any | Record<string, any>>` - the data to filter when typing (`required`)
 - *initial*: `Array<any | Record<string, any>>` - the data to show when the field is empty (default: `[]`)
 - *keybinding*: `Array<string> | null` - combination of keys that need to be pressed (default: `['shift', 'p']`)

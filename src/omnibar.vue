@@ -1,6 +1,6 @@
 <template>
   <transition name="omnibar-fade">
-    <div class="omnibar" :class="{ 'omnibar-shadow': shadow, 'omnibar-overlay': overlay }" @click="handleOverlayClick($event)" v-if="open">
+    <div class="omnibar" :ref="name" :data-name="name" :class="{ 'omnibar-shadow': shadow, 'omnibar-overlay': overlay }" @click="handleOverlayClick($event)" v-if="open">
       <div class="omnibar-inside">
         <slot name="header">
           <h3>Omnibar</h3>
@@ -50,6 +50,7 @@ interface Methods {
 interface Computed {}
 
 interface Props {
+  name: string | boolean | null
   keybinding: Array<string> | null
   shadow: boolean
   overlay: boolean
@@ -64,6 +65,12 @@ const FOCUSABLE = 'a, button, input, textarea, select, details, [tabindex]:not([
 export default Vue.extend<Data, Methods, Computed, Props>({
   name: 'Omnibar',
   props: {
+    // namespace the modal so it can be opened/closed with a named event
+    name: {
+      type: [String, Boolean, null],
+      required: false,
+      default: '',
+    },
     // which key combo to use to open the modal
     keybinding: {
       type: [Array, null],
@@ -118,7 +125,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   },
   mounted() {
     // allow the modal to be opened programmatically
-    this.$root.$on('openOmnibar', this.openOmnibar);
+    const evt = Boolean(this.name) ? `openOmnibar.${this.name}` : 'openOmnibar';
+    this.$root.$on(evt, this.openOmnibar);
   },
   methods: {
     handleArrowKeys(e: KeyboardEvent) {

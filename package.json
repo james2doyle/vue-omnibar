@@ -1,6 +1,6 @@
 {
   "name": "vue-omnibar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Create modal popups that emulate omnibar, command palette, open anywhere, or other \"search and act\" functions/features",
   "homepage": "https://james2doyle.github.io/vue-omnibar",
   "keywords": [
