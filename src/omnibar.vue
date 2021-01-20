@@ -50,7 +50,7 @@ interface Methods {
 interface Computed {}
 
 interface Props {
-  keybinding: Array<string>
+  keybinding: Array<string> | null
   shadow: boolean
   overlay: boolean
   options: Fuse.IFuseOptions<string>
@@ -66,7 +66,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   props: {
     // which key combo to use to open the modal
     keybinding: {
-      type: Array,
+      type: [Array, null],
       required: false,
       default: () => ['shift', 'p'] as Array<string>,
     },
@@ -173,18 +173,18 @@ export default Vue.extend<Data, Methods, Computed, Props>({
         this.closeOmnibar();
       }
 
-      if (!e.isComposing && !e.repeat && this.keybinding.includes(key)) {
+      if (!e.isComposing && !e.repeat && (this.keybinding !== null && this.keybinding.includes(key))) {
         this.keys[key] = true;
       }
 
-      const allKeys = Object.values(this.keys).filter(Boolean).length === this.keybinding.length;
+      const allKeys = this.keybinding !== null && Object.values(this.keys).filter(Boolean).length === this.keybinding.length;
       if (allKeys && this.open === false) {
         this.openOmnibar();
       }
     },
     handleKeyUp(e: KeyboardEvent) {
       const key = e.key.toLowerCase() as typeof e.key;
-      if (!e.isComposing && !e.repeat && this.keybinding.includes(key)) {
+      if (!e.isComposing && !e.repeat && (this.keybinding !== null && this.keybinding.includes(key))) {
         this.keys[key] = false;
       }
     },

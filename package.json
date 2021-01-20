@@ -1,6 +1,6 @@
 {
   "name": "vue-omnibar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create modal popups that emulate omnibar, command palette, open anywhere, or other \"search and act\" functions/features",
   "homepage": "https://james2doyle.github.io/vue-omnibar",
   "keywords": [
@@ -31,11 +31,10 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve dev/serve.ts",
-    "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
+    "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js && cp dist/omnibar.min.js docs/omnibar.min.js",
     "build:ssr": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
     "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
-    "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife",
-    "deploy": "git subtree push --prefix public origin gh-pages"
+    "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife"
   },
   "dependencies": {
     "fuse.js": "^6.4.2"

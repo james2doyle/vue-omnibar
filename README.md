@@ -118,7 +118,7 @@ export default Vue.extend({
 
 - *data*: `Array<any | Record<string, any>>` - the data to filter when typing (`required`)
 - *initial*: `Array<any | Record<string, any>>` - the data to show when the field is empty (default: `[]`)
-- *keybinding*: `Array<string>` - combination of keys that need to be pressed (default: `['shift', 'p']`)
+- *keybinding*: `Array<string> | null` - combination of keys that need to be pressed (default: `['shift', 'p']`)
 - *shadow*: `boolean` - add a shadow to the view box (default: `true`)
 - *overlay*: `boolean` - show an overlay under the view box (default: `true`)
 - *options*: `Fuse.IFuseOptions<string>` - options to pass to Fuse.js ([see options page](https://fusejs.io/api/options.html)) (default: `{}`)

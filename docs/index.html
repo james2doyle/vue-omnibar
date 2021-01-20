@@ -173,7 +173,7 @@ Vue.component(<span class="hljs-string">'omnibar'</span>, Omnibar);
 <ul>
 <li><em>data</em>: <code>Array&lt;any | Record&lt;string, any&gt;&gt;</code> - the data to filter when typing (<code>required</code>)</li>
 <li><em>initial</em>: <code>Array&lt;any | Record&lt;string, any&gt;&gt;</code> - the data to show when the field is empty (default: <code>[]</code>)</li>
-<li><em>keybinding</em>: <code>Array&lt;string&gt;</code> - combination of keys that need to be pressed (default: <code>['shift', 'p']</code>)</li>
+<li><em>keybinding</em>: <code>Array&lt;string&gt; | null</code> - combination of keys that need to be pressed (default: <code>['shift', 'p']</code>)</li>
 <li><em>shadow</em>: <code>boolean</code> - add a shadow to the view box (default: <code>true</code>)</li>
 <li><em>overlay</em>: <code>boolean</code> - show an overlay under the view box (default: <code>true</code>)</li>
 <li><em>options</em>: <code>Fuse.IFuseOptions&lt;string&gt;</code> - options to pass to Fuse.js (<a href="https://fusejs.io/api/options.html">see options page</a>) (default: <code>{}</code>)</li>
