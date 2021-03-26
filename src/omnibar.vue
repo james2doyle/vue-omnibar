@@ -128,7 +128,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     const evtOpen = Boolean(this.name) ? `openOmnibar.${this.name}` : 'openOmnibar';
     this.$root.$on(evtOpen, this.openOmnibar);
     const evtClose = Boolean(this.name) ? `closeOmnibar.${this.name}` : 'closeOmnibar';
-    this.$root.$on(evtClose, this.openOmnibar);
+    this.$root.$on(evtClose, this.closeOmnibar);
   },
   methods: {
     handleArrowKeys(e: KeyboardEvent) {
