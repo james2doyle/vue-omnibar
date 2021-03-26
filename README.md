@@ -114,6 +114,8 @@ export default Vue.extend({
 <button type="button" @click.prevent="$root.$emit('openOmnibar')">Show Omnibar</button>
 <!-- if there is a `name`, the event will have the name appended: `'openOmnibar.myName'` -->
 <button type="button" @click.prevent="$root.$emit('openOmnibar.myName')">Show "myName" modal</button>
+<!-- you can also close the modal with the opposite event: `'closeOmnibar.myName'` -->
+<button type="button" @click.prevent="$root.$emit('closeOmnibar.myName')">Close "myName" modal</button>
 ```
 
 ## Available Props

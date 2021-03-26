@@ -124,9 +124,11 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     window.removeEventListener('keyup', this.handleKeyUp);
   },
   mounted() {
-    // allow the modal to be opened programmatically
-    const evt = Boolean(this.name) ? `openOmnibar.${this.name}` : 'openOmnibar';
-    this.$root.$on(evt, this.openOmnibar);
+    // allow the modal to be opened/closed programmatically
+    const evtOpen = Boolean(this.name) ? `openOmnibar.${this.name}` : 'openOmnibar';
+    this.$root.$on(evtOpen, this.openOmnibar);
+    const evtClose = Boolean(this.name) ? `closeOmnibar.${this.name}` : 'closeOmnibar';
+    this.$root.$on(evtClose, this.openOmnibar);
   },
   methods: {
     handleArrowKeys(e: KeyboardEvent) {

@@ -173,6 +173,8 @@ Vue.component(<span class="hljs-string">'omnibar'</span>, Omnibar);
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"$root.$emit('openOmnibar')"</span>&gt;</span>Show Omnibar<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-comment">&lt;!-- if there is a `name`, the event will have the name appended: `'openOmnibar.myName'` --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"$root.$emit('openOmnibar.myName')"</span>&gt;</span>Show "myName" modal<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-comment">&lt;!-- you can also close the modal with the opposite event: `'closeOmnibar.myName'` --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> @<span class="hljs-attr">click.prevent</span>=<span class="hljs-string">"$root.$emit('closeOmnibar.myName')"</span>&gt;</span>Close "myName" modal<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 </code></pre>
 <h2><a id="available-props" class="anchor" aria-hidden="true" href="#available-props"></a>Available Props</h2>
 <ul>
