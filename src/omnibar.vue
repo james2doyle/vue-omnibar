@@ -5,7 +5,7 @@
         <slot name="header">
           <h3>Omnibar</h3>
         </slot>
-        <input type="search" name="search" id="omnibar-search" class="omnibar-search" ref="omnibar-search" placeholder="Search" @input="handleInput($event)" @keyup="handleArrowKeys($event)" autocomplete="off" autofocus />
+        <input type="search" name="search" id="omnibar-search" class="omnibar-search" ref="omnibar-search" :placeholder="placeholder" @input="handleInput($event)" @keyup="handleArrowKeys($event)" autocomplete="off" autofocus />
         <div class="omnibar-search-list" ref="omnibar-search-list" @keyup="handleArrowKeys($event)">
           <slot name="initial" v-bind="{ initial }" v-if="initial.length > 0 && results.length < 1">
             <div v-for="item in initial" :key="JSON.stringify(item)" class="omnibar-search-initial-item">
@@ -57,6 +57,7 @@ interface Props {
   options: Fuse.IFuseOptions<string>
   data: Array<ItemData>
   initial: Array<ItemData>
+  placeholder: string
 }
 
 // selector list for elements that can be focused
@@ -106,6 +107,12 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       required: false,
       default: () => [],
     },
+    // The search inputs placeholder
+    placeholder: {
+      type: String,
+      required: false,
+      default: 'Search',
+    },
   },
   data() {
     return {
@@ -139,7 +146,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       }
 
       // prevent scrolling with space and arrow keys when fired on the omnibar
-      if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+      if (["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
         e.preventDefault();
       }
 
